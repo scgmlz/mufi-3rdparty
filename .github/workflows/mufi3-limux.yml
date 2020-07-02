@@ -64,7 +64,7 @@ jobs:
         mkdir build && cd build
         cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_COMPILER_LAUNCHER=ccache \
           -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ../
-        make package_source
+        # make package_source
         make -j4
 
     - name: Upload tarball
