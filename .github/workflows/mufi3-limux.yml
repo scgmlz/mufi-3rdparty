@@ -1,21 +1,15 @@
 ## ************************************************************************** ##
 ##
-##  BornAgain: simulate and fit scattering at grazing incidence
+##  Multifit:  wrapper for various fit libraries
 ##
-##! @file      .github/workflows/ba-linux.yml
-##! @brief     GitHub runner configuration for building BornAgain under Linux
+##! @file      .github/workflows/mufi3-linux.yml
+##! @brief     GitHub runner configuration for building 3rdparty dependences under Linux
 ##!
-##! @homepage  http://www.bornagainproject.org
 ##! @license   GNU General Public License v3 or higher (see COPYING)
 ##! @copyright Forschungszentrum Jülich GmbH 2020
-##! @authors   Scientific Computing Group at MLZ (see CITATION, AUTHORS)
+##! @authors   Scientific Computing Group at MLZ (see AUTHORS)
 ##
 ## ************************************************************************** ##
-
-##! Build scripts for GitHub Actions were introduced with BornAgain-1.17.
-##! This script incorporates code by
-##! - Andrew Nelson (https://github.com/reflectivity/analysis)
-##! - Cristian Adam (https://cristianadam.eu/20200113/speeding-up-c-plus-plus-github-actions-using-ccache/)
 
 name: Linux
 
@@ -55,9 +49,9 @@ jobs:
       uses: actions/cache@v1.1.0
       with:
         path: .ccache
-        key: mufi-linux-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+        key: mufi3-linux-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
         restore-keys: |
-          mufi-linux-ccache-
+          mufi3-linux-ccache-
 
     - name: Build Multifit
       env:
