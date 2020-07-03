@@ -15,13 +15,9 @@ name: MacOS
 
 on:
   push:
-    branches: [ master, develop]
-    paths-ignore:
-      - 'Doc/**'
+    branches: [ master ]
   pull_request:
-    branches: [ master, develop ]
-    paths-ignore:
-      - 'Doc/**'
+    branches: [ master ]
 
 jobs:
   build:
@@ -62,7 +58,6 @@ jobs:
         CXX: clang++
         USE_CPP: 14
         CMAKE_CXX_STANDARD: 14
-        PYTHON_VERSION: 3.8
         LLVM_BC_GENERATOR: /usr/bin/clang++
       run: |
         cd $GITHUB_WORKSPACE
@@ -96,5 +91,5 @@ jobs:
       uses: actions/upload-artifact@v2
       if: success()
       with:
-         name: BornAgainMacInstaller
+         name: MultiFit3rdparty
          path: ./build/*.dmg

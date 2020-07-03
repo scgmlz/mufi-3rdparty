@@ -99,4 +99,7 @@ message(STATUS "Destination directories:
     images->${destination_images},
     libexec->${destination_libexec}")
 
+find_package(GSL REQUIRED)
+
+
 add_subdirectory(RootMinimizers)

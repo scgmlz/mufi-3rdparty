@@ -19,13 +19,9 @@ env:
 
 on:
   push:
-    branches: [ master, develop]
-    paths-ignore:
-      - 'Doc/**'
+    branches: [ master ]
   pull_request:
-    branches: [ master, develop ]
-    paths-ignore:
-      - 'Doc/**'
+    branches: [ master ]
 
 jobs:
   build:
