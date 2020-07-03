@@ -42,7 +42,7 @@ jobs:
         cd ${{github.workspace}}
         mkdir deps
         Get-Date -Format G
-        wget http://apps.jcns.fz-juelich.de/src/WinLibs/bornagain_deps_20200604.zip -O ${{runner.temp}}\local_x64.zip
+        wget http://apps.jcns.fz-juelich.de/src/WinLibs/bornagain_deps_20200703.zip -O ${{runner.temp}}\local_x64.zip
         Get-Date -Format G
         7z x ${{runner.temp}}\local_x64.zip -odeps
         Get-Date -Format G
@@ -94,6 +94,7 @@ jobs:
         CCACHE_MAXSIZE: "1000M"
       run: |
         call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+        set OPTLIBS=${{github.workspace}}\deps\local_x64
         set PATH=${{github.workspace}};%OPTLIBS%\lib;%PATH%
         cd ${{github.workspace}}
         dir
