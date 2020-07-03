@@ -1,21 +1,15 @@
 ## ************************************************************************** ##
 ##
-##  BornAgain: simulate and fit scattering at grazing incidence
+##  Multifit:  wrapper for various fit libraries
 ##
-##! @file      .github/workflows/ba-windows.yml
-##! @brief     GitHub runner configuration for building BornAgain under Windows
+##! @file      .github/workflows/mufi3-windows.yml
+##! @brief     GitHub runner configuration for building 3rdparty dependences under Linux
 ##!
-##! @homepage  http://www.bornagainproject.org
 ##! @license   GNU General Public License v3 or higher (see COPYING)
 ##! @copyright Forschungszentrum Jülich GmbH 2020
-##! @authors   Scientific Computing Group at MLZ (see CITATION, AUTHORS)
+##! @authors   Scientific Computing Group at MLZ (see AUTHORS)
 ##
 ## ************************************************************************** ##
-
-##! Build scripts for GitHub Actions were introduced with BornAgain-1.17.
-##! This script incorporates code by
-##! - Andrew Nelson (https://github.com/reflectivity/analysis)
-##! - Cristian Adam (https://cristianadam.eu/20200113/speeding-up-c-plus-plus-github-actions-using-ccache/)
 
 name: Windows
 
@@ -38,18 +32,11 @@ jobs:
     runs-on: windows-latest
     strategy:
       max-parallel: 3
-      matrix:
-        python-version: [3.8]
 
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: true
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
 
     - name: setup dependencies
       shell: powershell
@@ -65,25 +52,6 @@ jobs:
         Get-Date -Format G
         dir deps
         dir deps/local_x64
-
-    - name: Install Python packages
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install wheel setuptools
-        python -m pip install numpy matplotlib
-
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2
-      with:
-        version: '5.14.2'
-        host: 'windows'
-        target: 'desktop'
-        arch: 'win64_msvc2017_64'
-        dir: '${{ github.workspace }}/qt5/'
-        install-deps: 'true'
-        modules: 'qtcharts qtwebengine'
-        mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-        cached: 'false'
 
     - name: Download ccache and Ninja
       id: ccache
@@ -116,11 +84,11 @@ jobs:
       uses: actions/cache@v1.1.0
       with:
         path: .ccache
-        key: ba-windows-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+        key: mufi3-windows-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
         restore-keys: |
-          ba-windows-ccache-
+          mufi3-windows-ccache-
 
-    - name: Build BornAgain
+    - name: Build
       shell: cmd
       env:
         CCACHE_BASEDIR: $GITHUB_WORKSPACE
@@ -130,9 +98,7 @@ jobs:
         CCACHE_MAXSIZE: "1000M"
       run: |
         call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
-        set OPTLIBS=${{github.workspace}}\deps\local_x64
-        set QTDIR=${{github.workspace}}\qt5\Qt\5.14.2\msvc2017_64
-        set PATH=${{github.workspace}};%OPTLIBS%\lib;%QTDIR%\bin;%PATH%
+        set PATH=${{github.workspace}};%OPTLIBS%\lib;%PATH%
         cd ${{github.workspace}}
         dir
         mkdir build
@@ -145,10 +111,8 @@ jobs:
     - name: Testing
       shell: cmd
       run: |
-        echo %QTDIR%
-        echo %OPTLIBS%
         set OPTLIBS=${{github.workspace}}\deps\local_x64
-        set PATH=%OPTLIBS%\lib;%QTDIR%\bin;%PATH%
+        set PATH=%OPTLIBS%\lib;%PATH%
         echo %PATH%
         cd ${{github.workspace}}\build
         ccache -s
